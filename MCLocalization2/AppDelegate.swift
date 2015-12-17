@@ -12,15 +12,18 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        let remoteProvider = MCLocalization.JSONProvider(remoteURL: NSURL(string: "https://github.com/Baglan/MCLocalization2/raw/master/MCLocalization2/remote-en-ru.json")!, localName: "remote-en-ru.json")
+        
         MCLocalization.sharedInstance().addProvider(MCLocalization.MainBundleProvider(table: nil))
+        MCLocalization.sharedInstance().addProvider(remoteProvider)
         MCLocalization.sharedInstance().addProvider(MCLocalization.JSONProvider(fileName: "local-en-ru.json"))
-        MCLocalization.sharedInstance().addProvider(MCLocalization.JSONProvider(remoteURL: NSURL(string: "")!, localName: nil))
         MCLocalization.sharedInstance().addProvider(MCLocalization.PlaceholderProvider())
+        
+        remoteProvider.fetchAsynchronously()
         
         return true
     }

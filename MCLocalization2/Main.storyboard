@@ -31,8 +31,8 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preferred language:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="epB-8S-O81">
-                                <rect key="frame" x="16" y="115" width="150.5" height="19.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="System language:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="epB-8S-O81">
+                                <rect key="frame" x="16" y="115" width="135.5" height="19.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -122,20 +122,28 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Vo-0w-NxR">
-                                <rect key="frame" x="266" y="436" width="46" height="44"/>
+                                <rect key="frame" x="68" y="436" width="46" height="44"/>
+                                <color key="backgroundColor" red="0.84705882349999995" green="0.84705882349999995" blue="0.84705882349999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="2F0-VU-vl1"/>
                                     <constraint firstAttribute="height" constant="44" id="7XC-R0-mHR"/>
                                 </constraints>
                                 <state key="normal" title="Ru"/>
+                                <connections>
+                                    <action selector="switchToRu:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oBv-8y-uo4"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gAU-kq-gvH">
-                                <rect key="frame" x="214" y="436" width="44" height="44"/>
+                                <rect key="frame" x="16" y="436" width="44" height="44"/>
+                                <color key="backgroundColor" red="0.84705882349999995" green="0.84705882349999995" blue="0.84705882349999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="f8A-Vr-uOG"/>
                                     <constraint firstAttribute="height" constant="44" id="v2D-9N-NA8"/>
                                 </constraints>
                                 <state key="normal" title="En"/>
+                                <connections>
+                                    <action selector="switchToEn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5l5-Hj-SRU"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -146,6 +154,7 @@
                             <constraint firstItem="nb4-xz-f3I" firstAttribute="top" secondItem="xYH-Dg-R2e" secondAttribute="bottom" constant="8" id="5vy-Ro-OcP"/>
                             <constraint firstItem="LHa-RL-Jde" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="AQq-J9-pz8"/>
                             <constraint firstItem="1CF-5f-kdp" firstAttribute="top" secondItem="Kvt-2u-sGx" secondAttribute="bottom" constant="8" id="ATx-WT-YxH"/>
+                            <constraint firstItem="gAU-kq-gvH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="EJG-gv-MbA"/>
                             <constraint firstItem="Elc-Jv-jFn" firstAttribute="top" secondItem="epB-8S-O81" secondAttribute="bottom" constant="8" id="FWY-hu-mdU"/>
                             <constraint firstItem="nb4-xz-f3I" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="GE6-Fa-Q5d"/>
                             <constraint firstItem="LHa-RL-Jde" firstAttribute="top" secondItem="xT2-Rk-U8t" secondAttribute="bottom" constant="8" id="JEM-1Y-SxN"/>
@@ -185,10 +194,16 @@
                                 <exclude reference="TxN-Xs-iQU"/>
                                 <exclude reference="dWp-1P-kQK"/>
                                 <exclude reference="sdb-en-dEy"/>
+                                <exclude reference="Si5-H5-QzD"/>
                             </mask>
                         </variation>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="availableLocalizationsLabel" destination="nb4-xz-f3I" id="LXk-P1-Mhu"/>
+                        <outlet property="preferredLanguageLabel" destination="xT2-Rk-U8t" id="4fQ-B4-mEG"/>
+                        <outlet property="systemLanguageLabel" destination="Elc-Jv-jFn" id="Qz4-x7-CbN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
