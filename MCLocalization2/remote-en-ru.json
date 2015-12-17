@@ -1,0 +1,10 @@
+{
+	"en":  {
+		"only-remote": "Only remote"
+		"remote-override": "Remote overrides local"
+	},
+	"ru": {
+		"only-remote": "Только удаленный"
+		"remote-override": "Удаленный заменяет локальный"
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"en":  {
+		"only-local": "Only local"
+		"remote-override": "This local localization should be overridden by remote"
+	},
+	"ru": {
+		"only-local": "Только локальный"
+		"remote-override": "Эта локальная локализация должна быть заменена удаленной"
+	}
+}

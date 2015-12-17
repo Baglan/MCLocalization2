@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol MCLocalizationProvider {
+protocol MCLocalizationProvider: class {
     var availableLanguages: [String] { get }
     func stringForKey(key: String, language: String) -> String?
 }
@@ -16,7 +16,7 @@ protocol MCLocalizationProvider {
 class MCLocalization: NSObject {
     // MARK: - Current language
     let languageStorageKey = "MCLocalization.languageStorageKey"
-    let languageUpdatedNotification = "MCLocalization.languageUpdatedNotification"
+    static let updatedNotification = "MCLocalization.updatedNotification"
     var language: String? {
         get {
             return preferredLanguage()
@@ -25,7 +25,7 @@ class MCLocalization: NSObject {
             if let newValue = newValue {
                 NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: languageStorageKey)
                 NSUserDefaults.standardUserDefaults().synchronize()
-                NSNotificationCenter.defaultCenter().postNotificationName(languageUpdatedNotification, object: self)
+                NSNotificationCenter.defaultCenter().postNotificationName(MCLocalization.updatedNotification, object: self)
             }
         }
     }
@@ -42,30 +42,29 @@ class MCLocalization: NSObject {
     var defaultLanguage: String?
     
     func preferredLanguage() -> String? {
-        let languages = availableLanguages()
+        var preferences = [String]()
+        let available = availableLanguages()
         
-        // Stored language if it's available
-        if let storedLanguage = NSUserDefaults.standardUserDefaults().stringForKey(languageStorageKey), let _ = languages.indexOf(storedLanguage) {
-            return storedLanguage
+        // Stored language if there is one available
+        if let storedLanguage = NSUserDefaults.standardUserDefaults().stringForKey(languageStorageKey) {
+            preferences.append(storedLanguage)
         }
         
-        // Are any of the preferred languages available
-        for language in NSLocale.preferredLanguages() {
-            if let _ = languages.indexOf(language) {
-                return language
-            }
+        // Preferred languages from user's locale
+        preferences.appendContentsOf(NSLocale.preferredLanguages())
+        
+        // Default language if available
+        if let defaultLanguage = defaultLanguage {
+            preferences.append(defaultLanguage)
         }
         
-        // Is the default language available
-        if let defaultLanguage = defaultLanguage, let _ = languages.indexOf(defaultLanguage) {
-            return defaultLanguage
+        // This construct is necessary because 'preferredLocalizationsFromArray' would return
+        // a value even if there are no available languages and we want to be able to capture
+        // this condition
+        if let language = NSBundle.preferredLocalizationsFromArray(available, forPreferences: preferences).first where available.indexOf(language) != nil {
+            return language
         }
-        
-        // First avaialble language
-        if let first = languages.first {
-            return first
-        }
-        
+
         return nil
     }
     
@@ -107,110 +106,21 @@ class MCLocalization: NSObject {
     private var providers = [MCLocalizationProvider]()
     func addProvider(provider: MCLocalizationProvider) {
         providers.append(provider)
+        providerUpdated(provider)
+    }
+    
+    func providerUpdated(updatedProvider: MCLocalizationProvider) {
+        for provider in providers {
+            if provider === updatedProvider {
+                NSNotificationCenter.defaultCenter().postNotificationName(MCLocalization.updatedNotification, object: self)
+                return
+            }
+        }
     }
     
     // MARK: - Shared instance
     private static let _instance = MCLocalization()
     class func sharedInstance() -> MCLocalization {
         return _instance
-    }
-}
-
-class MCLocalizationPlaceholderProvider: MCLocalizationProvider {
-    var availableLanguages: [String] { get { return [] } }
-    func stringForKey(key: String, language: String) -> String? {
-        return "[\(language): \(key)]"
-    }
-}
-
-class MCLocalizationSingleLanguageJSONFileProvider: MCLocalizationProvider {
-    internal let _language: String
-    internal let _strings: [String: String]
-    
-    required init(language: String, JSONFileURL: NSURL?) {
-        _language = language
-        
-        var strings: [String: String]?
-        if let URL = JSONFileURL, let data = NSData(contentsOfURL: URL) {
-            do {
-                let JSONObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
-                if let JSONObject = JSONObject as? [String: String] {
-                    strings = JSONObject
-                }
-            } catch {
-            }
-        }
-        
-        if let strings = strings {
-            _strings = strings
-        } else {
-            _strings = [String:String]()
-        }
-    }
-    
-    convenience init(language: String, JSONFileName: String, bundle: NSBundle?) {
-        let sourceBundle = bundle == nil ? NSBundle.mainBundle() : bundle!
-        let JSONFileURL = sourceBundle.URLForResource(JSONFileName, withExtension: nil)
-        self.init(language: language, JSONFileURL: JSONFileURL)
-    }
-    
-    convenience init(language: String, JSONFileName: String) {
-        self.init(language: language, JSONFileName: JSONFileName, bundle: nil)
-    }
-    
-    var availableLanguages: [String] { get { return [_language] } }
-    func stringForKey(key: String, language: String) -> String? {
-        if _language == language {
-            return _strings[key]
-        }
-        return nil
-    }
-}
-
-class MCLocalizationMultipleLanguageJSONFileProvider: MCLocalizationProvider {
-    let _strings: [String:[String:String]]
-    
-    required init(JSONFileURL: NSURL?) {
-        var strings: [String:[String:String]]?
-        if let URL = JSONFileURL, let data = NSData(contentsOfURL: URL) {
-            do {
-                let JSONObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
-                if let JSONObject = JSONObject as? [String:[String:String]] {
-                    strings = JSONObject
-                }
-            } catch {
-            }
-        }
-        
-        if let strings = strings {
-            _strings = strings
-        } else {
-            _strings = [String:[String:String]]()
-        }
-    }
-    
-    convenience init(JSONFileName: String, bundle: NSBundle?) {
-        let sourceBundle = bundle == nil ? NSBundle.mainBundle() : bundle!
-        let JSONFileURL = sourceBundle.URLForResource(JSONFileName, withExtension: nil)
-        self.init(JSONFileURL: JSONFileURL)
-    }
-    
-    convenience init(JSONFileName: String) {
-        self.init(JSONFileName: JSONFileName, bundle: nil)
-    }
-    
-    var availableLanguages: [String] {
-        get {
-            return _strings.map { (key: String, _) -> String in
-                return key
-            }
-        }
-    }
-    
-    func stringForKey(key: String, language: String) -> String? {
-        if let strings = _strings[language] {
-            return strings[key]
-        }
-        return nil
     }
 }

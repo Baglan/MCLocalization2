@@ -16,6 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        MCLocalization.sharedInstance().addProvider(MCLocalization.MainBundleProvider(table: nil))
+        MCLocalization.sharedInstance().addProvider(MCLocalization.JSONProvider(fileName: "local-en-ru.json"))
+        MCLocalization.sharedInstance().addProvider(MCLocalization.JSONProvider(remoteURL: NSURL(string: "")!, localName: nil))
+        MCLocalization.sharedInstance().addProvider(MCLocalization.PlaceholderProvider())
+        
         return true
     }
 
