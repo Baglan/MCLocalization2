@@ -18,10 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let remoteProvider = MCLocalization.JSONProvider(remoteURL: NSURL(string: "https://github.com/Baglan/MCLocalization2/raw/master/MCLocalization2/remote-en-ru.json")!, localName: "remote-en-ru.json")
         
-        MCLocalization.sharedInstance().addProvider(MCLocalization.MainBundleProvider(table: nil))
-        MCLocalization.sharedInstance().addProvider(remoteProvider)
-        MCLocalization.sharedInstance().addProvider(MCLocalization.JSONProvider(fileName: "local-en-ru.json"))
-        MCLocalization.sharedInstance().addProvider(MCLocalization.PlaceholderProvider())
+        MCLocalization.sharedInstance.addProvider(MCLocalization.MainBundleProvider(table: nil))
+        MCLocalization.sharedInstance.addProvider(remoteProvider)
+        MCLocalization.sharedInstance.addProvider(MCLocalization.JSONProvider(fileName: "local-en-ru.json"))
+        MCLocalization.sharedInstance.addProvider(MCLocalization.PlaceholderProvider())
         
         remoteProvider.fetchAsynchronously()
         

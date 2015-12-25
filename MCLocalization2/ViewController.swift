@@ -14,11 +14,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var preferredLanguageLabel: UILabel!
     
     @IBAction func switchToEn(sender: AnyObject) {
-        MCLocalization.sharedInstance().language = "en"
+        MCLocalization.sharedInstance.language = "en"
     }
     
     @IBAction func switchToRu(sender: AnyObject) {
-        MCLocalization.sharedInstance().language = "ru"
+        MCLocalization.sharedInstance.language = "ru"
     }
     
     override func viewDidLoad() {
@@ -30,9 +30,9 @@ class ViewController: UIViewController {
     }
     
     func localize() {
-        availableLocalizationsLabel.text = MCLocalization.sharedInstance().availableLanguages().joinWithSeparator(", ")
+        availableLocalizationsLabel.text = MCLocalization.sharedInstance.availableLanguages().joinWithSeparator(", ")
         systemLanguageLabel.text = NSLocale.preferredLanguages().first
-        preferredLanguageLabel.text = MCLocalization.sharedInstance().language
+        preferredLanguageLabel.text = MCLocalization.sharedInstance.language
         
     }
 

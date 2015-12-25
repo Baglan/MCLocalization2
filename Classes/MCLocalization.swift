@@ -95,11 +95,11 @@ class MCLocalization: NSObject {
     
     // MARK: - Convenience class functions
     class func stringForKey(key: String) -> String? {
-        return MCLocalization.sharedInstance().stringForKey(key)
+        return MCLocalization.sharedInstance.stringForKey(key)
     }
     
     class func stringForKey(key: String, replacements: [String: String]) -> String? {
-        return MCLocalization.sharedInstance().stringForKey(key, replacements: replacements)
+        return MCLocalization.sharedInstance.stringForKey(key, replacements: replacements)
     }
     
     // MARK: - Providers
@@ -119,8 +119,5 @@ class MCLocalization: NSObject {
     }
     
     // MARK: - Shared instance
-    private static let _instance = MCLocalization()
-    class func sharedInstance() -> MCLocalization {
-        return _instance
-    }
+    static let sharedInstance = MCLocalization()
 }

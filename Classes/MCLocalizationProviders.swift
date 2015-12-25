@@ -130,7 +130,7 @@ extension MCLocalization {
                         
                         if self.adoptJSONObject(JSONObject) {
                             NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                                MCLocalization.sharedInstance().providerUpdated(self)
+                                MCLocalization.sharedInstance.providerUpdated(self)
                             })
                             
                             // If synchronous URL (e.g. cache) is configured, attempt to save data to it

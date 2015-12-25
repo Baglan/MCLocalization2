@@ -14,7 +14,6 @@ import UIKit
 /// **Note:** only the *text* property is localized. This should have no effect
 /// on attributed text labels
 @IBDesignable class MCAutolocalizedLabel: UILabel {
-    /// eer
     @IBInspectable var localizationKey: String? { didSet { localize() } }
     
     private let localizationKeyKey = "localizationKeyKey"
