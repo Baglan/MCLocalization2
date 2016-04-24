@@ -28,7 +28,7 @@ import UIKit
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "localize", name: MCLocalization.updatedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MCAutolocalizedLabel.localize), name: MCLocalization.updatedNotification, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -40,7 +40,7 @@ import UIKit
         
         super.init(coder: aDecoder)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "localize", name: MCLocalization.updatedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MCAutolocalizedLabel.localize), name: MCLocalization.updatedNotification, object: nil)
     }
     
     func localize() {
