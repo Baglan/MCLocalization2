@@ -15,8 +15,8 @@ extension MCLocalization {
     ///
     /// [en: some_unlocalized_key]
     class PlaceholderProvider: MCLocalizationProvider {
-        var availableLanguages: [String] { get { return [] } }
-        func stringForKey(key: String, language: String) -> String? {
+        var languages: [String] { get { return [] } }
+        func string(for key: String, language: String) -> String? {
             return "[\(language): \(key)]"
         }
     }
@@ -33,8 +33,8 @@ extension MCLocalization {
         
         let uniqueString = NSUUID().UUIDString
         
-        var availableLanguages: [String] { get { return NSBundle.mainBundle().localizations } }
-        func stringForKey(key: String, language: String) -> String? {
+        var languages: [String] { get { return NSBundle.mainBundle().localizations } }
+        func string(for key: String, language: String) -> String? {
             // The 'defaultValue' "trickery" is here because 'localizedStringForKey'
             // will always return a string even if there is no localization available
             // and we want to capture this condition
@@ -143,7 +143,7 @@ extension MCLocalization {
             }
         }
         
-        var availableLanguages: [String] {
+        var languages: [String] {
             get {
                 return strings.map { (key: String, _) -> String in
                     return key
@@ -151,7 +151,7 @@ extension MCLocalization {
             }
         }
         
-        func stringForKey(key: String, language: String) -> String? {
+        func string(for key: String, language: String) -> String? {
             if let strings = strings[language] {
                 return strings[key]
             }

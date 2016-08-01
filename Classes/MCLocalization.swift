@@ -9,8 +9,12 @@
 import Foundation
 
 protocol MCLocalizationProvider: class {
-    var availableLanguages: [String] { get }
-    func stringForKey(key: String, language: String) -> String?
+    var languages: [String] { get }
+    func string(for key: String, language: String) -> String?
+}
+
+protocol MCLocalizationObserver: class {
+    func localize(localization: MCLocalization?)
 }
 
 class MCLocalization: NSObject {
@@ -25,7 +29,7 @@ class MCLocalization: NSObject {
             if let newValue = newValue {
                 NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: languageStorageKey)
                 NSUserDefaults.standardUserDefaults().synchronize()
-                NSNotificationCenter.defaultCenter().postNotificationName(MCLocalization.updatedNotification, object: self)
+                notifyOfUpdates()
             }
         }
     }
@@ -33,7 +37,7 @@ class MCLocalization: NSObject {
     func availableLanguages() -> [String] {
         var languages = Set<String>()
         for provider in providers {
-            languages.unionInPlace(provider.availableLanguages)
+            languages.unionInPlace(provider.languages)
         }
         return Array(languages.sort())
     }
@@ -69,37 +73,50 @@ class MCLocalization: NSObject {
     }
     
     // MARK: - Strings
-    func stringForKey(key: String) -> String? {
+    func string(for key: String, replacements: [String: String]? = nil) -> String? {
+        var string: String? = nil
+        
         if let language = language {
             for provider in providers {
-                if let str = provider.stringForKey(key, language: language) {
-                    return str
+                if let str = provider.string(for: key, language: language) {
+                    string = str
+                    break
                 }
             }
         }
         
-        return nil
-    }
-    
-    func stringForKey(key: String, replacements: [String: String]) -> String? {
-        if let str = stringForKey(key) {
+        if let str = string, let replacements = replacements  {
             var result = str
             for (key,value) in replacements {
                 result = result.stringByReplacingOccurrencesOfString(key, withString: value)
             }
-            return result
+            string = result
         }
         
-        return nil
+        return string
+    }
+    
+    /**
+     Asynchronous version for lengthy lookups.
+     
+     Lookup will be done in a background queue. Completion handler will be called on the current queue
+     
+     - parameter for: localization key
+     - parameter completionHandler: completion handler
+     */
+    func string(for key: String, completionHandler: ((string: String?) -> Void)) {
+        let currentQueue = NSOperationQueue.currentQueue()
+        NSOperationQueue().addOperationWithBlock { [unowned self] in
+            let string = self.string(for: key)
+            currentQueue?.addOperationWithBlock({ 
+                completionHandler(string: string)
+            })
+        }
     }
     
     // MARK: - Convenience class functions
-    class func stringForKey(key: String) -> String? {
-        return MCLocalization.sharedInstance.stringForKey(key)
-    }
-    
-    class func stringForKey(key: String, replacements: [String: String]) -> String? {
-        return MCLocalization.sharedInstance.stringForKey(key, replacements: replacements)
+    class func string(for key: String, replacements: [String: String]? = nil) -> String? {
+        return MCLocalization.sharedInstance.string(for: key, replacements: replacements)
     }
     
     // MARK: - Providers
@@ -112,9 +129,38 @@ class MCLocalization: NSObject {
     func providerUpdated(updatedProvider: MCLocalizationProvider) {
         for provider in providers {
             if provider === updatedProvider {
-                NSNotificationCenter.defaultCenter().postNotificationName(MCLocalization.updatedNotification, object: self)
+                notifyOfUpdates()
                 return
             }
+        }
+    }
+    
+    // MARK: - Notify of updates
+    
+    func notifyOfUpdates() {
+        // Post notification
+        NSNotificationCenter.defaultCenter().postNotificationName(MCLocalization.updatedNotification, object: self)
+        
+        // Update notifiers
+        for observer in observers  {
+            observer.localize(self)
+        }
+    }
+    
+    // MARK: - Observers
+    
+    var observers = [MCLocalizationObserver]()
+    
+    func addObserver(observer: MCLocalizationObserver) {
+        observers.append(observer)
+    }
+    
+    func removeObserver(observer: MCLocalizationObserver) {
+        let index = observers.indexOf { (item) -> Bool in
+            return observer === item
+        }
+        if let index = index {
+            observers.removeAtIndex(index)
         }
     }
     

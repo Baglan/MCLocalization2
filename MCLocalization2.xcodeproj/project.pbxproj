@@ -13,6 +13,7 @@
 		866480F61C12D63700FB5D32 /* MCLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866480F51C12D63700FB5D32 /* MCLocalization.swift */; };
 		866945591C228ABD00FF91CB /* local-en-ru.json in Resources */ = {isa = PBXBuildFile; fileRef = 866945571C228ABD00FF91CB /* local-en-ru.json */; };
 		8669455A1C228ABD00FF91CB /* remote-en-ru.json in Resources */ = {isa = PBXBuildFile; fileRef = 866945581C228ABD00FF91CB /* remote-en-ru.json */; };
+		868600E71D4CA38000E33445 /* MCLocalization+Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868600E61D4CA38000E33445 /* MCLocalization+Localizer.swift */; };
 		86BBB3F51C1BEC7400971BB5 /* MCLocalizationProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BBB3F41C1BEC7400971BB5 /* MCLocalizationProviders.swift */; };
 		86BBB3F91C1C1E3B00971BB5 /* MCAutolocalizedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BBB3F81C1C1E3B00971BB5 /* MCAutolocalizedLabel.swift */; };
 		86BBB4031C1C248A00971BB5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 86BBB4051C1C248A00971BB5 /* Localizable.strings */; };
@@ -30,6 +31,7 @@
 		866945571C228ABD00FF91CB /* local-en-ru.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "local-en-ru.json"; sourceTree = "<group>"; };
 		866945581C228ABD00FF91CB /* remote-en-ru.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "remote-en-ru.json"; sourceTree = "<group>"; };
 		8669455B1C228B0700FF91CB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		868600E61D4CA38000E33445 /* MCLocalization+Localizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "MCLocalization+Localizer.swift"; path = "Classes/MCLocalization+Localizer.swift"; sourceTree = "<group>"; };
 		86BBB3F41C1BEC7400971BB5 /* MCLocalizationProviders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MCLocalizationProviders.swift; path = Classes/MCLocalizationProviders.swift; sourceTree = "<group>"; };
 		86BBB3F81C1C1E3B00971BB5 /* MCAutolocalizedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MCAutolocalizedLabel.swift; path = Classes/MCAutolocalizedLabel.swift; sourceTree = "<group>"; };
 		86BBB4041C1C248A00971BB5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				866480F51C12D63700FB5D32 /* MCLocalization.swift */,
 				86BBB3F41C1BEC7400971BB5 /* MCLocalizationProviders.swift */,
 				86BBB3F81C1C1E3B00971BB5 /* MCAutolocalizedLabel.swift */,
+				868600E61D4CA38000E33445 /* MCLocalization+Localizer.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -178,6 +181,7 @@
 				866480E51C12D5F900FB5D32 /* ViewController.swift in Sources */,
 				866480F61C12D63700FB5D32 /* MCLocalization.swift in Sources */,
 				86BBB3F91C1C1E3B00971BB5 /* MCAutolocalizedLabel.swift in Sources */,
+				868600E71D4CA38000E33445 /* MCLocalization+Localizer.swift in Sources */,
 				866480E31C12D5F900FB5D32 /* AppDelegate.swift in Sources */,
 				86BBB3F51C1BEC7400971BB5 /* MCLocalizationProviders.swift in Sources */,
 			);

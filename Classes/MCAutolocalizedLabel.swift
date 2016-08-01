@@ -44,7 +44,7 @@ import UIKit
     }
     
     func localize() {
-        if let localizationKey = localizationKey, let localizedString = MCLocalization.stringForKey(localizationKey) {
+        if let localizationKey = localizationKey, let localizedString = MCLocalization.string(for: localizationKey) {
             text = localizedString
         }
     }
