@@ -16,11 +16,11 @@ import UIKit
 @IBDesignable class MCAutolocalizedLabel: UILabel {
     @IBInspectable var localizationKey: String? { didSet { localize() } }
     
-    private let localizationKeyKey = "localizationKeyKey"
+    fileprivate let localizationKeyKey = "localizationKeyKey"
     
-    override func encodeWithCoder(aCoder: NSCoder) {
-        super.encodeWithCoder(aCoder)
-        aCoder.encodeObject(localizationKey, forKey: localizationKeyKey)
+    override func encode(with aCoder: NSCoder) {
+        super.encode(with: aCoder)
+        aCoder.encode(localizationKey, forKey: localizationKeyKey)
     }
     
     // This, otherwise unnecessary, override is required for init(coder) to work.
@@ -28,19 +28,19 @@ import UIKit
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MCAutolocalizedLabel.localize), name: MCLocalization.updatedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MCAutolocalizedLabel.localize), name: NSNotification.Name(rawValue: MCLocalization.updatedNotification), object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if aDecoder.containsValueForKey(localizationKeyKey) {
-            if let localizationKey = aDecoder.decodeObjectForKey(localizationKeyKey) as? String {
+        if aDecoder.containsValue(forKey: localizationKeyKey) {
+            if let localizationKey = aDecoder.decodeObject(forKey: localizationKeyKey) as? String {
                 self.localizationKey = localizationKey
             }
         }
         
         super.init(coder: aDecoder)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MCAutolocalizedLabel.localize), name: MCLocalization.updatedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MCAutolocalizedLabel.localize), name: NSNotification.Name(rawValue: MCLocalization.updatedNotification), object: nil)
     }
     
     func localize() {
@@ -50,7 +50,7 @@ import UIKit
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

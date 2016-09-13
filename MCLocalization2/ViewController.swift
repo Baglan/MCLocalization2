@@ -13,11 +13,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var systemLanguageLabel: UILabel!
     @IBOutlet weak var preferredLanguageLabel: UILabel!
     
-    @IBAction func switchToEn(sender: AnyObject) {
+    @IBAction func switchToEn(_ sender: AnyObject) {
         MCLocalization.sharedInstance.language = "en"
     }
     
-    @IBAction func switchToRu(sender: AnyObject) {
+    @IBAction func switchToRu(_ sender: AnyObject) {
         MCLocalization.sharedInstance.language = "ru"
     }
     
@@ -25,13 +25,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.localize), name: MCLocalization.updatedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.localize), name: NSNotification.Name(rawValue: MCLocalization.updatedNotification), object: nil)
         localize()
     }
     
     func localize() {
-        availableLocalizationsLabel.text = MCLocalization.sharedInstance.availableLanguages().joinWithSeparator(", ")
-        systemLanguageLabel.text = NSLocale.preferredLanguages().first
+        availableLocalizationsLabel.text = MCLocalization.sharedInstance.availableLanguages().joined(separator: ", ")
+        systemLanguageLabel.text = Locale.preferredLanguages.first
         preferredLanguageLabel.text = MCLocalization.sharedInstance.language
         
     }

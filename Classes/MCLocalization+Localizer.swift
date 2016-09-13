@@ -12,7 +12,7 @@ import UIKit
 extension MCLocalization {
     class Localizer: MCLocalizationObserver {
         
-        var localizationHandler: ((localization: MCLocalization) -> Void)?
+        var localizationHandler: ((_ localization: MCLocalization) -> Void)?
         
         /**
          Triggers localization.
@@ -21,10 +21,10 @@ extension MCLocalization {
          
          - parameter localization: defaults to _MCLocalization.sharedInstance_
          */
-        func localize(localization: MCLocalization? = nil) {
+        func localize(_ localization: MCLocalization? = nil) {
             guard let localizationHandler = localizationHandler else { return }
             let l10n = localization ?? MCLocalization.sharedInstance
-            localizationHandler(localization: l10n)
+            localizationHandler(l10n)
         }
         
         // MARK: - Convenience class methods
@@ -35,7 +35,7 @@ extension MCLocalization {
          
          - parameter with: Localization handler
         */
-        class func localizer(with localizationHandler: ((localization: MCLocalization) -> Void)) -> Localizer {
+        class func localizer(with localizationHandler: @escaping ((_ localization: MCLocalization) -> Void)) -> Localizer {
             let localization = MCLocalization.sharedInstance
             let localizer = Localizer()
             localization.addObserver(localizer)
