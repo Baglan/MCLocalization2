@@ -43,7 +43,7 @@ import UIKit
         NotificationCenter.default.addObserver(self, selector: #selector(MCAutolocalizedLabel.localize), name: NSNotification.Name(rawValue: MCLocalization.updatedNotification), object: nil)
     }
     
-    func localize() {
+    @objc func localize() {
         if let localizationKey = localizationKey, let localizedString = MCLocalization.string(for: localizationKey) {
             text = localizedString
         }

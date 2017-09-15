@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         localize()
     }
     
-    func localize() {
+    @objc func localize() {
         availableLocalizationsLabel.text = MCLocalization.sharedInstance.availableLanguages().joined(separator: ", ")
         systemLanguageLabel.text = Locale.preferredLanguages.first
         preferredLanguageLabel.text = MCLocalization.sharedInstance.language
